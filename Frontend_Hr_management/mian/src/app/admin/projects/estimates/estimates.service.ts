@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Estimates } from './estimates.model';
+
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { TasksModel } from '../all-projects/core/project.model';
@@ -38,45 +38,8 @@ export class EstimatesService extends UnsubscribeOnDestroyAdapter {
       },
     });
   }
-  addEstimates(estimates: TasksModel): void {
-    this.dialogData = estimates;
 
-    // this.httpClient.post(this.API_URL, estimates)
-    //   .subscribe({
-    //     next: (data) => {
-    //       this.dialogData = estimates;
-    //     },
-    //     error: (error: HttpErrorResponse) => {
-    //        // error code here
-    //     },
-    //   });
-  }
-  updateEstimates(estimates: TasksModel): void {
-    this.dialogData = estimates;
 
-    // this.httpClient.put(this.API_URL + estimates.id, estimates)
-    //     .subscribe({
-    //       next: (data) => {
-    //         this.dialogData = estimates;
-    //       },
-    //       error: (error: HttpErrorResponse) => {
-    //          // error code here
-    //       },
-    //     });
-  }
-  deleteEstimates(id: number): void {
-    console.log(id);
-
-    // this.httpClient.delete(this.API_URL + id)
-    //     .subscribe({
-    //       next: (data) => {
-    //         console.log(id);
-    //       },
-    //       error: (error: HttpErrorResponse) => {
-    //          // error code here
-    //       },
-    //     });
-  }
   private apiUrl = 'http://localhost:3000'; 
   createTask(createTaskDto: any): Observable<any> {
     return this.httpClient.post<any>(`${this.apiUrl}/task`, createTaskDto);

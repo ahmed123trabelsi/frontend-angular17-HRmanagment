@@ -2,7 +2,7 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogClose } from 
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { EstimatesService } from '../../estimates.service';
 import { UntypedFormControl, Validators, UntypedFormGroup, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Estimates } from '../../estimates.model';
+
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -68,8 +68,8 @@ taskAdd!:any
   ngOnInit(): void {
     this.authService.getAllusers().subscribe((dataaa)=>this.users=dataaa)
     this.estimatesService.getTasks().subscribe((dataa)=>{this.data.tasks=dataa;  
-      console.log('kkjjjj',this.data.tasks)})
-    console.log('kk',this.data.tasks)
+   })
+ 
     this.taskForm = this.fb.group({
   
       NomTask: ['', [Validators.required]],
@@ -134,9 +134,7 @@ this.user=datauser
     });
   }
 
-  submit() {
-    // emppty stuff
-  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -146,9 +144,6 @@ this.user=datauser
     Object.assign(this.data.task, this.taskForm.value);
   }else{
     this.estimatesService.createTask2(this.taskForm.getRawValue()).subscribe((newTask) => {
-  // Émet la nouvelle tâche ajoutée
-/*       Object.assign(this.data.task, this.taskForm.value); */
-
 
 this.data.tasks.push(newTask)
 

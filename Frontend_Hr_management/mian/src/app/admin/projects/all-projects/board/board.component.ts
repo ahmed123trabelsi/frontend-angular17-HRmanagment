@@ -106,18 +106,18 @@ export class BoardComponent implements OnInit {
   }
 
   public newProjectDialog(): void {
-    this.dialogOpen('Create new project', null,null);
+    this.dialogOpen('Create new project', null,null,this.projects);
   }
 
   public editProjectDialog(id: string,projectt:any): void {
-    this.dialogOpen('Edit project', id,projectt);
+    this.dialogOpen('Edit project', id,projectt,null);
   }
   public route(id: string): void {
     this.r.navigate(['admin/projects/estimates', id]);
   }
   
   
-  private dialogOpen(title: string, projectId: string| null ,projectt:any| null): void {
+  private dialogOpen(title: string, projectId: string| null ,projectt:any| null,projects:any[]| null): void {
     let tempDirection: Direction = localStorage.getItem('isRtl') === 'true' ? 'rtl' : 'ltr';
     this.dialog.open(ProjectDialogComponent, {
       height: '85%',
@@ -127,6 +127,7 @@ export class BoardComponent implements OnInit {
         title,
         projectId, // projectId can now be a string or null
         projectt,
+        projects
       },
       direction: tempDirection,
     });

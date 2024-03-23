@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { Estimates } from './estimates.model';
+
 import { DataSource } from '@angular/cdk/collections';
 import {
   MatSnackBar,
@@ -76,7 +76,7 @@ export class EstimatesComponent
   index?: number;
   id?: string;
   p!:any
-  estimates?: TasksModel;
+
   t!:any
   constructor(
     private actR : ActivatedRoute,
@@ -102,12 +102,7 @@ export class EstimatesComponent
     this.estimatesService.getTasks().subscribe({
       next: (data: any) => {
         this.tasks = data;
-        // Pour afficher les tâches dans la console ou effectuer d'autres opérations :
-        for (let task of this.tasks) {
-     this.t=task
-          // Ici, vous pouvez faire ce que vous voulez avec chaque `task`
-          // Par exemple, si vous voulez effectuer une opération sur chaque tâche, faites-le ici.
-        }
+      
       },
       error: (error) => {
         console.error('Il y a eu une erreur lors de la récupération des tâches :', error);
@@ -116,10 +111,7 @@ export class EstimatesComponent
     
 
   }
-  handleTaskAdded(ts:any[]): any[] {
-    // Ajoutez la nouvelle tâche à la liste des tâches
-return ts
-  }
+ 
   refresh() {
 this.ngOnInit()
   }
@@ -132,7 +124,7 @@ this.ngOnInit()
     }
     const dialogRef = this.dialog.open(FormDialogComponent, {
       data: {
-     estimates: this.estimates,
+   
        action: 'add',
          idProject:idProject ,
          tasks :this.tasks   ,
@@ -143,7 +135,7 @@ this.ngOnInit()
     this.subs.sink =  dialogRef.afterClosed().subscribe(result => {
       console.log('Le dialogue a été fermé.', result);
       if (result) {
-        this.handleTaskAdded(result);
+       
         this.tasks=result
       }
     });

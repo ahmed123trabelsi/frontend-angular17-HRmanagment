@@ -27,6 +27,7 @@ export interface DialogData {
   title: string;
   projectId:string;
 projectt:any;
+projects:any[]
 }
 
 @Component({
@@ -171,9 +172,11 @@ export class ProjectDialogComponent {
     
       console.log(formattedValues);
       this.projectService.createProject(formattedValues).subscribe(
-        () => {
+        (newProject) => {
       
-          this.R.navigate(['admin/projects/allProjects']);
+          this.data.projects.push(newProject)
+
+          this.dialogRef.close(this.data.projects);
         }
       );
       this.snackBar.open('Project created Successfully...!!!', '', {
@@ -183,7 +186,7 @@ export class ProjectDialogComponent {
         panelClass: 'black',
       });
 
-      this.dialogRef.close();
+
     }
   }
 }
