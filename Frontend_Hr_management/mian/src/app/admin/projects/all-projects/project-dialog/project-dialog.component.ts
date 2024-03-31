@@ -5,8 +5,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogClose } from '@angular/material/dialog';
 
 import {
-  Project,
-  ProjectStatus,
+
+ 
   ProjectPriority,
   ProjectType,
 } from '../core/project.model';
@@ -28,6 +28,7 @@ export interface DialogData {
   projectId:string;
 projectt:any;
 projects:any[]
+idUser:any
 }
 
 @Component({
@@ -84,6 +85,7 @@ export class ProjectDialogComponent {
         type:[''],
         NomChefProjet:  [''],
         progress:  [0],
+        UserProjectsId: [    this.data.idUser ],
       });
  
    

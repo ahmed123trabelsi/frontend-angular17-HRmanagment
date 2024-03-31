@@ -3,7 +3,7 @@ import { CdkDragDrop, CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { Project, ProjectStatus, TypeStatutProjet } from '../core/project.model';
+import { TypeStatutProjet } from '../core/project.model';
 import { ProjectService } from '../core/project.service';
 import { ProjectDialogComponent } from '../project-dialog/project-dialog.component';
 import { Direction } from '@angular/cdk/bidi';
@@ -16,6 +16,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from '@core';
 
 
 @Component({
@@ -38,38 +40,40 @@ import { Router } from '@angular/router';
     ],
 })
 export class BoardComponent implements OnInit {
-  public lists: object;
+  user!:any
   projects: any[] = [];
+  userfinded: any = { projects: [] };
+
   constructor(
     private projectService: ProjectService,
     private dialog: MatDialog,
-    private r:Router
+    private r:Router,
+    private cookieService:CookieService,
+    private auth:AuthService
  
   ) {
-    this.lists = {};
+  
   }
 
   public ngOnInit(): void {
-    this.projectService.getProjects().subscribe((projects) => {
-      // First, assign the projects data to this.projects
-      this.projects = projects;
-    
-      // Then, split projects into status categories
-
-    });
+ this.retrieveUserData()
     
   }
 
-  unsorted = (): number => {
-    return 0;
-  };
-  public drop(event: CdkDragDrop<any>): void {
-    if (event.previousContainer !== event.container) {
-      const project = event.item.data;
-      // project.status = ProjectStatus[event.container.id];
-      project.status =
-        ProjectStatus[JSON.parse(JSON.stringify(event.container.id))];
-      this.projectService.updateObject(project);
+  retrieveUserData() {
+    const cookieData = this.cookieService.get('user_data');
+    if (cookieData) {
+      try {
+        const userData = JSON.parse(cookieData);
+        this.user = userData.user; // Store user data in the component's variable
+        this.auth.getUserById(this.user.id).subscribe((data)=>{this.userfinded=data;
+          console.log('dd',this.userfinded.projects)
+        });
+      } catch (error) {
+        console.error('Error decoding cookie:', error);
+      }
+    } else {
+      console.error('Cookie "user_data" is not set');
     }
   }
   
@@ -106,18 +110,18 @@ export class BoardComponent implements OnInit {
   }
 
   public newProjectDialog(): void {
-    this.dialogOpen('Create new project', null,null,this.projects);
+    this.dialogOpen('Create new project', null,null,this.userfinded.projects,this.user.id);
   }
 
   public editProjectDialog(id: string,projectt:any): void {
-    this.dialogOpen('Edit project', id,projectt,null);
+    this.dialogOpen('Edit project', id,projectt,null,this.user.id);
   }
   public route(id: string): void {
     this.r.navigate(['admin/projects/estimates', id]);
   }
   
   
-  private dialogOpen(title: string, projectId: string| null ,projectt:any| null,projects:any[]| null): void {
+  private dialogOpen(title: string, projectId: string| null ,projectt:any| null,projects:any[]| null,idUser:any| null): void {
     let tempDirection: Direction = localStorage.getItem('isRtl') === 'true' ? 'rtl' : 'ltr';
     this.dialog.open(ProjectDialogComponent, {
       height: '85%',
@@ -127,7 +131,8 @@ export class BoardComponent implements OnInit {
         title,
         projectId, // projectId can now be a string or null
         projectt,
-        projects
+        projects,
+        idUser
       },
       direction: tempDirection,
     });

@@ -21,6 +21,7 @@ export interface DialogData {
   task: any;
   taskId:string;
   idProject:string;
+  idP:any;
   tasks:TasksModel[]
 }
 
@@ -44,7 +45,7 @@ export interface DialogData {
     ],
 })
 export class FormDialogComponent {
-  @Output() taskAdded = new EventEmitter<any>(); 
+ 
   action!: string; 
   dialogTitle!: string; 
   taskForm!: UntypedFormGroup ;
@@ -67,8 +68,13 @@ taskAdd!:any
 /*   estimates: Estimates; */
   ngOnInit(): void {
     this.authService.getAllusers().subscribe((dataaa)=>this.users=dataaa)
-    this.estimatesService.getTasks().subscribe((dataa)=>{this.data.tasks=dataa;  
-   })
+    this.actR.params.subscribe(params => {
+      const _id = params['_id'];
+      this.projectService.getProjectById(this.data.idP).subscribe(data => {
+        this.data.tasks= data.tasks; 
+   
+      });
+    });
  
     this.taskForm = this.fb.group({
   
@@ -82,6 +88,7 @@ taskAdd!:any
        description: ['', [Validators.required]],
        employeeAffected:['', [Validators.required]],
        projectId: [this.data.idProject],
+       
     
 
   
@@ -121,18 +128,7 @@ this.user=datauser
   }
 
 
-  createContactForm(): UntypedFormGroup {
-    return this.fb.group({
-      NomTask: ['', [Validators.required]],
-      priority: [''],
-      startDate: ['', [Validators.required]],
-      FinishDate: ['', [Validators.required]],
-      statut: [''],
-       description: ['', [Validators.required]],
-       employeeAffected:['', [Validators.required]],
-       projectId: [this.data.idProject],
-    });
-  }
+
 
 
   onNoClick(): void {
@@ -160,6 +156,7 @@ this.dialogRef.close(this.data.tasks);
       FinishDate:  this.taskForm.value.FinishDate,
       statut: this.taskForm.value.statut,
       priority: this.taskForm.value.priority,
+      employeeAffected:this.taskForm.value.employeeAffected
     
   
       // Incluez 'f' si vous ne le mettez pas à jour ici

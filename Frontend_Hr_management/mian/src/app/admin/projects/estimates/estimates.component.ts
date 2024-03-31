@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EstimatesService } from './estimates.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -76,7 +76,7 @@ export class EstimatesComponent
   index?: number;
   id?: string;
   p!:any
-
+_id!:any
   t!:any
   constructor(
     private actR : ActivatedRoute,
@@ -84,7 +84,7 @@ export class EstimatesComponent
     private projectService: ProjectService,
     public dialog: MatDialog,
     public estimatesService: EstimatesService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,private cdr: ChangeDetectorRef
   ) {
     super();
   }
@@ -93,10 +93,10 @@ export class EstimatesComponent
   @ViewChild('filter', { static: true }) filter!: ElementRef;
   ngOnInit() {
     this.actR.params.subscribe(params => {
-      const _id = params['_id'];
-      this.projectService.getProjectById(_id).subscribe(data => {
+       this._id = params['_id'];
+      this.projectService.getProjectById(this._id).subscribe(data => {
         this.p= data; 
-      
+   
       });
     });
     this.estimatesService.getTasks().subscribe({
@@ -124,10 +124,10 @@ this.ngOnInit()
     }
     const dialogRef = this.dialog.open(FormDialogComponent, {
       data: {
-   
+   idP:this._id,
        action: 'add',
          idProject:idProject ,
-         tasks :this.tasks   ,
+         tasks :this.p.tasks   ,
          task:this.t      
       },
       direction: tempDirection,
@@ -136,7 +136,9 @@ this.ngOnInit()
       console.log('Le dialogue a été fermé.', result);
       if (result) {
        
-        this.tasks=result
+
+        this.p.tasks=  result
+
       }
     });
   }
@@ -148,38 +150,16 @@ this.ngOnInit()
     } else {
       tempDirection = 'ltr';
     }
-    const dialogRef = this.dialog.open(FormDialogComponent, {
+    this.dialog.open(FormDialogComponent, {
       data: {
         // estimates: row,
         taskId:row._id,
         action: 'edit',
         task:row,
-      tasks :this.tasks    },
+      tasks :this.p.tasks   },
       direction: tempDirection,
     });
-    this.subs.sink = dialogRef.afterClosed().subscribe((result) => {
-      if (result === 1) {
-        // When using an edit things are little different, firstly we find record inside DataService by id
-        const foundIndex = this.exampleDatabase?.dataChange.value.findIndex(
-          (x) => x._id === this.id
-        );
-        // Then you update that record using data from dialogData (values you enetered)
-        if (foundIndex !== undefined) {
-          if (this.exampleDatabase) {
-            this.exampleDatabase.dataChange.value[foundIndex] =
-              this.estimatesService.getDialogData();
-          }
-          // And lastly refresh table
-     
-          this.showNotification(
-            'black',
-            'Edit Record Successfully...!!!',
-            'bottom',
-            'center'
-          );
-        }
-      }
-    });
+
   }
   public deleteItem(row: any): void {
     Swal.fire({
@@ -195,7 +175,7 @@ this.ngOnInit()
         this.estimatesService.deleteTask(row._id).subscribe(() => {
           Swal.fire(
             'Supprimé!',
-            'Votre projet a été supprimé.',
+            'Votre task a été supprimé.',
             'success'
           );
           this.ngOnInit(); // Ou une autre méthode pour actualiser la liste des projets
@@ -203,7 +183,7 @@ this.ngOnInit()
           // Gérer l'erreur ici, par exemple :
           Swal.fire(
             'Erreur!',
-            'La suppression du projet a échoué.',
+            'La suppression du task a échoué.',
             'error'
           );
         });
@@ -293,6 +273,7 @@ this.ngOnInit()
 }
 export class ExampleDataSource extends DataSource<any> {
   filterChange = new BehaviorSubject('');
+
   get filter(): string {
     return this.filterChange.value;
   }

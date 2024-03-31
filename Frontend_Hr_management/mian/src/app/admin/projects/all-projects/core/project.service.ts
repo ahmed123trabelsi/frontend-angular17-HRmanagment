@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Project } from './project.model';
+
 // import { PROJECTS } from "./project.data";
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 
 @Injectable({
@@ -25,16 +25,6 @@ export class ProjectService extends UnsubscribeOnDestroyAdapter {
   }
 
   /** CRUD METHODS */
-  getAllProjectss(): void {
-    this.subs.sink = this.httpClient.get<Project[]>(this.API_URL).subscribe({
-      next: (data) => {
-        this._projects.next(data); // mock up backend with fake data (not Project objects yet!)
-      },
-      error: (error: HttpErrorResponse) => {
-        console.log(error.name + ' ' + error.message);
-      },
-    });
-  }
 
 
 
@@ -42,33 +32,11 @@ export class ProjectService extends UnsubscribeOnDestroyAdapter {
 
 
 
-  public createOject(project: any): void {
-    project.id = this._projects.getValue().length + 1; // mock Project object with fake id (we have no backend)
-    this._projects.next(this._projects.getValue().concat(project));
-  }
-
-  public updateObject(project: any): void {
-    const projects = this._projects.getValue();
-    const projectIndex = projects.findIndex((t: any) => t.id === project.id);
-    projects[projectIndex] = project;
-    this._projects.next(projects);
-  }
 
 
 
-  public detachObject(project: Project): void {
-    // add project id to trash
-    this.trash.add(project.id);
-    // force emit change for projects observers
-    return this._projects.next(this._projects.getValue());
-  }
 
-  public attachObject(project: Project): void {
-    // remove project id from trash
-    this.trash.delete(project.id);
-    // force emit change for projects observers
-    return this._projects.next(this._projects.getValue());
-  }
+
   createProject(project: any): Observable<any> {
     return this. httpClient.post(`${this.baseUrl}`, project);
   }
@@ -89,7 +57,12 @@ export class ProjectService extends UnsubscribeOnDestroyAdapter {
     return this. httpClient.delete(`${this.baseUrl}/${id}`);
   }
   
+  getProjectsByTaskIds(taskIds: string[]): Observable<any[]> {
+    const url = `${this.baseUrl}/by-tasks/jj`;
+    const body = { taskIds }; // Corps de la requête avec les taskIds
 
+    return this.httpClient.post<any[]>(url, body);
+  }
   
 
 }

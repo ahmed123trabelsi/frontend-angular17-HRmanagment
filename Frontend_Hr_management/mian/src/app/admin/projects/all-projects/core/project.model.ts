@@ -2,23 +2,18 @@ import { Injectable } from '@angular/core';
 import { User } from '@core';
 import { Adapter } from './adapters';
 export enum TypeStatutProjet {
-  NOUVEAU = 0,
+  New = 0,
   RUNNING = 1,
 
   FINISHED = 3,
 }
 export enum TypeStatutTache{
-  A_FAIRE = 'à faire',
+  A_FAIRE = 'To Do',
   RUNNING = 'RUNNING',
   FINISHED = 'FINISHED',
 }
 
-export enum ProjectStatus {
-  NOUVEAU = 0,
-  RUNNING = 1,
 
-  FINISHED = 3,
-}
 
 export enum ProjectPriority {
   LOW = -1,
@@ -37,23 +32,7 @@ export enum ProjectType {
   TESTING = 'Testing',
 }
 
-export class Project {
-  constructor(
-    public id: number,
-    public name: string,
-    public status: number = ProjectStatus.NOUVEAU,
-    public description?: string,
-    public deadline?: Date,
-    public priority: number = ProjectPriority.MEDIUM,
-    public open_task?: number,
-    public type: string = ProjectType.WEB,
-    public created?: Date,
-    public team_leader?: string,
-    public comments?: number,
-    public bugs?: number,
-    public progress?: number
-  ) {}
-}
+
 
 @Injectable({
   providedIn: 'root',
@@ -71,6 +50,7 @@ tasks?: TasksModel[];
 NomChefProjet?: string;
 priority?: ProjectPriority ;
 progress?:number;
+UserProjectsId?:string;
 type?:ProjectType
 }
 export class TasksModel {

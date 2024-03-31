@@ -22,6 +22,7 @@ import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.co
 import { ProjectService } from '../all-projects/core/project.service';
 import * as moment from 'moment';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-add-project',
   templateUrl: './add-project.component.html',
@@ -46,6 +47,7 @@ export class AddprojectsComponent {
   projectForm: UntypedFormGroup;
   hide3 = true;
   agree3 = false;
+  iduser!:any
   public Editor: any = ClassicEditor;
   teamList: string[] = [
     'Sarah Smith',
@@ -53,9 +55,10 @@ export class AddprojectsComponent {
     'Pankaj Patel',
     'Pooja Sharma',
   ];
-  constructor(private fb:UntypedFormBuilder, private projectService: ProjectService,private r:Router) {
+  constructor(private fb:UntypedFormBuilder, private projectService: ProjectService,private r:Router,private cookieService:CookieService) {
+    this.retrieveUserData()
     this.projectForm = this.fb.group({
-  
+    
       NomProject: ['', [Validators.required]],
       priority: ['', [Validators.required]],
    /*    NomChefProjet: ['', [Validators.required]], */
@@ -64,11 +67,26 @@ export class AddprojectsComponent {
       team: [''],
       statut: [''],
        description: ['', [Validators.required]],
-
+       UserProjectsId: [ this.iduser ],
        type: ['', [Validators.required]],
     });
   }
-  
+
+  retrieveUserData() {
+
+    const cookieData = this.cookieService.get('user_data');
+    if (cookieData) {
+      try {
+        const userData = JSON.parse(cookieData);
+        this.iduser = userData.user.id; // Store user data in the component's variable
+      
+      } catch (error) {
+        console.error('Error decoding cookie:', error);
+      }
+    } else {
+      console.error('Cookie "user_data" is not set');
+    }
+  }
   addProject(){
     const formattedValues = {
       ...this.projectForm.value,
@@ -82,7 +100,7 @@ export class AddprojectsComponent {
   
     // Convert priority to a number if it's not already
   
-    console.log(formattedValues);
+    console.log('jj',formattedValues);
     this.projectService.createProject(formattedValues).subscribe(
       () => {
     

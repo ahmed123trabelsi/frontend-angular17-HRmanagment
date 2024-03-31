@@ -4,7 +4,7 @@
  
       <ul class="projects" 
     >
-        @for (project of projects ; track project) {
+        @for (project of userfinded?.projects ; track project) {
           <li class="project " cdkDrag [cdkDragData]="project"  (dblclick)="route(project._id)"
             >
             <h4   class="project-title"><span  class="material-icons-outlined project-icon">
@@ -32,7 +32,7 @@
                 }
               </div>
             </span>
-            <p class="mt-3"> {{ project.description | truncate:[280, '&hellip;'] | stripHtml  }}
+            <p class="mt-3"> {{ project?.description | truncate:[280, '&hellip;'] | stripHtml  }}
             </p>
             <div class="project-members m-b-15">
               <ul class="team-members">
@@ -41,7 +41,7 @@
                     <div class="col-5 pro-left mb-2">Created:</div>
                     <div class="col-7 pro-left mb-2"> <span class="material-icons-outlined project-icon2">
                       date_range
-                    </span>{{convertDate(project.StartDate)  | date }}</div>
+                    </span>{{convertDate(project?.StartDate)  | date }}</div>
              <!--        <div class="col-5 pro-left mb-2">Team Leader:</div>
                     <div class="col-7 pro-left mb-2">{{ project.NomChefProjet }}</div> -->
                     <div class="col-5 pro-left mb-2">Priority:</div>
@@ -64,8 +64,8 @@
                     </div>
                     <div class="col-5 pro-left mb-2">Deadline:</div>
                     <div class="col-7 pro-left mb-2">
-                      @if (project.FinishDate ) {
-                        <div class="deadline">
+                      @if (project?.FinishDate ) {
+                        <div class="deadline" >
                           <span class="material-icons-outlined project-icon2">
                             date_range
                           </span>{{ convertDate(project.FinishDate)  | date }}
