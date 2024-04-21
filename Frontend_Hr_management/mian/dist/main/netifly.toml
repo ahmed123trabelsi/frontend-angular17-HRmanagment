@@ -1,7 +1,7 @@
 [build]
   base = "/"
   publish = "dist/main"
-  command = "npm i --force && ng build --prod"
+  command = "npm i --force && ng build --configuration production"
 
 [[redirects]]
   from = "/*"
