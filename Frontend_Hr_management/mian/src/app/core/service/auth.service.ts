@@ -67,7 +67,7 @@ export class AuthService {
   //   this.currentUserSubject.next(this.currentUserValue);
   //   return of({ success: false });
   // }
-  private apiUrl = 'http://localhost:3000/auth'; // Remplacez cette URL par l'URL de votre backend
+  private apiUrl = 'https://backend-nest-js-hrmanagment.onrender.com'; // Remplacez cette URL par l'URL de votre backend
   logout() {
     // Supprimer les cookies
     this.cookieService.deleteAll();

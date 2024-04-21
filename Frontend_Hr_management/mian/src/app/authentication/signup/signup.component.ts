@@ -79,7 +79,6 @@ export class SignupComponent implements OnInit {
     };
     console.log(signupDto);
 
-    this.userservice.signUp(signupDto)
-      .subscribe();
+    this.userservice.signUp(signupDto).subscribe();
   }
 }
