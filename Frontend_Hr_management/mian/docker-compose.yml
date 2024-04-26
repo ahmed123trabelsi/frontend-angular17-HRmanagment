@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-  library-nest-api:
+  nest:
     build: ../../HR_Managment_application_Backend/
     restart: on-failure
     ports:
       - "3000:3000"
     environment:
       - MONGODB_URL=mongodb://mongodb:27017/library-next-api
-      - HOSTNAME=library-nest-api
+      - HOSTNAME=nest
       - PORT=3000
     depends_on:
       - mongodb
@@ -27,7 +27,7 @@ services:
     ports:
       - "4200:4200"  # Exposez le port 80 du conteneur sur le port 4200 de l'hôte
     depends_on:
-      - library-nest-api  # Dépendance optionnelle, si votre frontend doit communiquer avec le backend
+      - nest # Dépendance optionnelle, si votre frontend doit communiquer avec le backend
 
 volumes:
   mongodb_data:
