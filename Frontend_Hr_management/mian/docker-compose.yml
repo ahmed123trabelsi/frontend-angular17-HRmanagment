@@ -22,7 +22,7 @@ services:
       - mongodb_data:/data/db
 
   front:
-    build: ./frontend-angular17-HRmanagment/Frontend_Hr_management/mian # Chemin vers le répertoire contenant le Dockerfile Angular
+    build: ./mian # Chemin vers le répertoire contenant le Dockerfile Angular
     restart: on-failure
     ports:
       - "4200:4200"  # Exposez le port 80 du conteneur sur le port 4200 de l'hôte
