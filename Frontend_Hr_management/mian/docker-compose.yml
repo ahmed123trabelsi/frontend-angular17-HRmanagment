@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   back:
-    build: ./backend_nest.js_HRmanagment/HR_Managment_application_Backend-
+    build: ./backend 
     restart: on-failure
     ports:
       - "3000:3000"
