@@ -15,7 +15,7 @@ services:
 
   mongodb:
     restart: unless-stopped
-    image: "mongo:4.4"
+    image: mongo
     ports:
       - "27018:27017"
     volumes:
