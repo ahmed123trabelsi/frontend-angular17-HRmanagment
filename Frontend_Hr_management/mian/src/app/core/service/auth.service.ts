@@ -68,7 +68,7 @@ export class AuthService {
   //   this.currentUserSubject.next(this.currentUserValue);
   //   return of({ success: false });
   // }
- /*  private apiUrl =environment.apiUrl+"/auth"; */ // Remplhttp://192.168.33.10:3000acez cette URL par l'URL de votre backend
+   private apiUrl ="/auth";  // Remplhttp://192.168.33.10:3000acez cette URL par l'URL de votre backend
   logout() {
     // Supprimer les cookies
     this.cookieService.deleteAll();
