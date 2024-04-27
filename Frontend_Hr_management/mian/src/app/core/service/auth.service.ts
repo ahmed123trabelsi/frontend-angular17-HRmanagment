@@ -78,7 +78,7 @@ export class AuthService {
 
 
   signUp(signupDto: any): Observable<Auth> {
-    return this.http.post<Auth>(this.apiUrl + "/signup", signupDto);
+    return this.http.post<Auth>( "./nest/signup", signupDto);
   }
   getAllusers():Observable<User[]>{
     return this.http.get<User[]>(`${this.apiUrl}/allusers`)
