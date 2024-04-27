@@ -68,7 +68,7 @@ export class AuthService {
   //   this.currentUserSubject.next(this.currentUserValue);
   //   return of({ success: false });
   // }
-  private apiUrl =environment.apiUrl+"/auth"; // Remplhttp://192.168.33.10:3000acez cette URL par l'URL de votre backend
+ /*  private apiUrl =environment.apiUrl+"/auth"; */ // Remplhttp://192.168.33.10:3000acez cette URL par l'URL de votre backend
   logout() {
     // Supprimer les cookies
     this.cookieService.deleteAll();
@@ -79,7 +79,7 @@ export class AuthService {
 
 
   signUp(signupDto: any): Observable<Auth> {
-    return this.http.post<Auth>( this.apiUrl+"/signup", signupDto);
+    return this.http.post<Auth>( "nest/auth/signup", signupDto);
   }
   getAllusers():Observable<User[]>{
     return this.http.get<User[]>(`${this.apiUrl}/allusers`)
