@@ -67,7 +67,7 @@ export class AuthService {
   //   this.currentUserSubject.next(this.currentUserValue);
   //   return of({ success: false });
   // }
-  private apiUrl = 'http://nest:3000/auth'; // Remplacez cette URL par l'URL de votre backend
+  private apiUrl = 'http://192.168.33.10:3000/auth'; // Remplhttp://192.168.33.10:3000acez cette URL par l'URL de votre backend
   logout() {
     // Supprimer les cookies
     this.cookieService.deleteAll();
